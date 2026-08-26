@@ -1,8 +1,12 @@
-; Object keys read as properties, including keys built from tokens.
-(pair key: (string) @property)
+; Where two patterns capture the *same* node, Zed keeps the later one, so these
+; run general to specific. Nesting is unaffected — an inner node sorts after its
+; parent and wins on its own.
 
 (string) @string
 (escape_sequence) @string.escape
+
+; Object keys, including keys built from tokens.
+(pair key: (string) @property)
 
 (number) @number
 [
@@ -14,15 +18,6 @@
 (comment) @comment
 
 ; --- Content Patcher tokens -------------------------------------------------
-; A token that takes input reads as a call (`{{Random: a, b}}`); a bare one
-; reads as a variable (`{{Season}}`). Order matters: the first pattern wins.
-
-(token
-  name: (token_name) @function
-  .
-  ":")
-
-(token name: (token_name) @variable.special)
 
 (token
   [
@@ -37,6 +32,14 @@
 (token_filter "|" @punctuation.special)
 (token_filter name: (token_filter_name) @attribute)
 (token_filter "=" @operator)
+
+; A bare token reads as a variable; one that takes input reads as a call. The
+; call pattern comes second so it wins where both match.
+(token name: (token_name) @variable.special)
+(token
+  name: (token_name) @function
+  .
+  ":")
 
 ; --- structure -------------------------------------------------------------
 
