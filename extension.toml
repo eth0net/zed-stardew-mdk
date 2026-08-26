@@ -13,3 +13,13 @@ languages = ["languages/content-patcher", "languages/stardew-json"]
 [grammars.stardew_json]
 repository = "https://github.com/eth0net/tree-sitter-stardew-json"
 commit = "b5ce0492ff17cc73c5afdfbf86768ae0725c5ec9"
+
+[language_servers.stardew-json-language-server]
+name = "Stardew JSON"
+languages = ["Content Patcher", "Stardew JSON"]
+
+# vscode-json-language-server only serves documents it recognises, and `jsonc`
+# is the id that enables its comment-tolerant mode.
+[language_servers.stardew-json-language-server.language_ids]
+"Content Patcher" = "jsonc"
+"Stardew JSON" = "jsonc"

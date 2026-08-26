@@ -1,0 +1,5 @@
+# Zed extensions are WebAssembly components. Declaring the target here means a
+# fresh checkout builds without a separate `rustup target add`.
+[toolchain]
+channel = "stable"
+targets = ["wasm32-wasip2"]
