@@ -103,7 +103,10 @@ names `Pathoschild.ContentPatcher`; with no manifest at the worktree root — a
 `Mods` folder opened whole — it assumes Content Patcher.
 
 To point a file somewhere else, replace the association. Anything under
-`settings` is merged over the extension's own configuration, so this wins:
+`settings` is merged over the extension's own configuration, so this wins. A
+`url` starting with `./` or `~/` is resolved against the worktree, matching
+Zed's own JSON support, so a pack that ships its own schema can commit a
+project-relative path rather than one that only works on one machine:
 
 ```json
 {

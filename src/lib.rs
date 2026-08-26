@@ -143,7 +143,48 @@ impl zed::Extension for StardewExtension {
             merge(&mut config, user);
         }
 
+        resolve_relative_schemas(&mut config, worktree);
+
         Ok(Some(config))
+    }
+}
+
+/// Resolves project-relative schema paths against the worktree, matching Zed's
+/// own JSON adapter. A content pack that ships its own schema can then commit
+/// `"./schemas/include.json"` instead of a path that works on one machine.
+fn resolve_relative_schemas(config: &mut Value, worktree: &Worktree) {
+    let Some(schemas) = config
+        .get_mut("json")
+        .and_then(|json| json.get_mut("schemas"))
+        .and_then(Value::as_array_mut)
+    else {
+        return;
+    };
+
+    for schema in schemas {
+        let Some(url) = schema.get("url").and_then(Value::as_str) else {
+            continue;
+        };
+
+        let resolved = if let Some(rest) = url.strip_prefix("~/") {
+            let Some(home) = worktree
+                .shell_env()
+                .into_iter()
+                .find_map(|(key, value)| (key == "HOME").then_some(value))
+            else {
+                continue;
+            };
+            PathBuf::from(home).join(rest)
+        } else if let Some(rest) = url.strip_prefix("./") {
+            PathBuf::from(worktree.root_path()).join(rest)
+        } else if url.starts_with("../") {
+            PathBuf::from(worktree.root_path()).join(url)
+        } else {
+            // An absolute path, or a URL with a scheme the server fetches itself.
+            continue;
+        };
+
+        schema["url"] = Value::String(file_uri(&resolved));
     }
 }
 
