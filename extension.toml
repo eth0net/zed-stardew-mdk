@@ -18,15 +18,15 @@ languages = [
 # symbol, `tree_sitter_stardew_json`. Bump `commit` with scripts/bump-grammar-rev.py.
 [grammars.stardew_json]
 repository = "https://github.com/eth0net/tree-sitter-stardew-json"
-commit = "b5ce0492ff17cc73c5afdfbf86768ae0725c5ec9"
+commit = "8b44780766d3729528f8fc76848191d167b60191"
 
 [grammars.stardew_dialogue]
 repository = "https://github.com/eth0net/tree-sitter-stardew-dialogue"
-commit = "27149d902aa01bc8ed28419131268f14149272cd"
+commit = "dbb822de62be4a5acc5b5e0b8f5d1bf89edb5b93"
 
 [grammars.stardew_event]
 repository = "https://github.com/eth0net/tree-sitter-stardew-event"
-commit = "2f5c71d2067314ce7f32c4a5dd5a0e3adc94857c"
+commit = "b3ac1faf756bf15fdde3b544dbf4cf63b623a813"
 
 [language_servers.stardew-json-language-server]
 name = "Stardew JSON"
