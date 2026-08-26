@@ -271,7 +271,9 @@ mod tests {
         // Backslashes become separators, the drive letter keeps its colon, and
         // the authority is followed by a root slash: `file:///C:/…`.
         assert_eq!(
-            file_uri(Path::new(r"C:\Users\x\AppData\Local\Zed\schemas\manifest.json")),
+            file_uri(Path::new(
+                r"C:\Users\x\AppData\Local\Zed\schemas\manifest.json"
+            )),
             "file:///C:/Users/x/AppData/Local/Zed/schemas/manifest.json"
         );
     }
