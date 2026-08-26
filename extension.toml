@@ -6,13 +6,22 @@ authors = ["eth0net <eth0net@pm.me>"]
 description = "Syntax highlighting and schema validation for Stardew Valley mods: SMAPI manifests, Content Patcher content packs and translation files"
 repository = "https://github.com/eth0net/zed-stardew-mdk"
 
-languages = ["languages/content-patcher", "languages/stardew-json"]
+languages = [
+  "languages/content-patcher",
+  "languages/stardew-json",
+  "languages/stardew-dialogue",
+  "languages/stardew-dialogue-data",
+]
 
 # Registered as `stardew_json` because Zed links the parser by its export
 # symbol, `tree_sitter_stardew_json`. Bump `commit` with scripts/bump-grammar-rev.py.
 [grammars.stardew_json]
 repository = "https://github.com/eth0net/tree-sitter-stardew-json"
 commit = "b5ce0492ff17cc73c5afdfbf86768ae0725c5ec9"
+
+[grammars.stardew_dialogue]
+repository = "https://github.com/eth0net/tree-sitter-stardew-dialogue"
+commit = "27149d902aa01bc8ed28419131268f14149272cd"
 
 [language_servers.stardew-json-language-server]
 name = "Stardew JSON"
