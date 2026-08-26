@@ -1,0 +1,59 @@
+# Git hooks, run by `prek` (https://prek.j178.dev).
+#:schema https://www.schemastore.org/prek.json
+#
+# Split by latency: anything that only reads files runs on `pre-commit`, so
+# committing stays quick; anything that compiles runs on `pre-push`.
+#
+#     prek install
+
+default_install_hook_types = ["pre-commit", "pre-push"]
+
+exclude = '''
+(?x)^(
+  # Copied verbatim from smapi.io. `scripts/update-schemas.sh` has to produce a
+  # clean diff, which a whitespace fixer would prevent.
+  schemas/|
+  # Deliberately exercises the awkward parts of the grammar, including
+  # whitespace inside strings.
+  examples/
+)
+'''
+
+# Bundled with prek itself, so there is nothing to clone and no Python to
+# install: a fresh checkout can run these offline.
+[[repos]]
+repo = "builtin"
+hooks = [
+  { id = "trailing-whitespace" },
+  { id = "end-of-file-fixer" },
+  # .gitattributes pins the working tree to LF; this catches a file that
+  # slipped in before it applied.
+  { id = "mixed-line-ending", args = ["--fix=lf"] },
+  { id = "check-merge-conflict" },
+  { id = "check-case-conflict" },
+  # Windows is a supported Zed platform, so a path that cannot exist there has
+  # to be caught here.
+  { id = "check-illegal-windows-names" },
+  { id = "check-toml" },
+  { id = "check-yaml" },
+  { id = "check-added-large-files" },
+]
+# No check-json: every JSON file here is JSONC by design.
+
+[[repos]]
+repo = "local"
+hooks = [
+  # Formats in place and lets the run fail if anything moved, so the fix is
+  # `git add` rather than reading a diff.
+  { id = "cargo-fmt", name = "cargo fmt", entry = "cargo fmt --all", language = "system", files = '\.rs$', pass_filenames = false, require_serial = true },
+
+  { id = "shellcheck", name = "shellcheck", entry = "shellcheck", language = "system", files = '^scripts/.*\.sh$' },
+
+  { id = "cargo-clippy", name = "cargo clippy", entry = "cargo clippy --all-targets -- -D warnings", language = "system", files = '\.rs$|(^|/)Cargo\.(toml|lock)$', pass_filenames = false, require_serial = true, stages = ["pre-push"] },
+
+  { id = "cargo-test", name = "cargo test", entry = "cargo test", language = "system", files = '\\.rs$|(^|/)Cargo\\.(toml|lock)$', pass_filenames = false, require_serial = true, stages = ["pre-push"] },
+
+  { id = "wasm", name = "cargo build (wasm32-wasip2)", entry = "cargo build --release --target wasm32-wasip2", language = "system", files = '\.rs$|(^|/)Cargo\.(toml|lock)$', pass_filenames = false, require_serial = true, stages = ["pre-push"] },
+
+  { id = "manifest", name = "check extension manifest", entry = "scripts/check-manifest.py", language = "system", files = '^(extension\.toml|languages/)', pass_filenames = false },
+]

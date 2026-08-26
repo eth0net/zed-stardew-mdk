@@ -1,0 +1,4 @@
+# The vendored schemas and the query files are compared against upstream and
+# against test fixtures, so a CRLF checkout on Windows would produce spurious
+# diffs. Windows is a supported Zed platform.
+* text=auto eol=lf

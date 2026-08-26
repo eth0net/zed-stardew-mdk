@@ -1,0 +1,6 @@
+**.wasm
+target/
+.DS_Store
+
+# Zed checks the grammar out into the extension directory when it builds
+/grammars/
