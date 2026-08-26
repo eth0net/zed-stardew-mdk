@@ -15,6 +15,9 @@ tokens as syntax and validates your files against the schemas SMAPI publishes.
 | `i18n/*.json` | Stardew JSON | [`i18n.json`](https://smapi.io/schemas/i18n.json) |
 | the game's dialogue files | Stardew Dialogue Data | — |
 
+Dialogue and event scripts inside those files are highlighted as the languages
+they are — see [Highlighting](#highlighting).
+
 > [!NOTE]
 > **New, and not yet in the extensions store.** Install it as a dev extension
 > for now — see [CONTRIBUTING.md](CONTRIBUTING.md). Diagnostics, completions and
@@ -100,8 +103,23 @@ they get their own language, reached through a glob.
 
 Content Patcher tokens inside a dialogue string keep their own highlighting.
 
-Event scripts — the `/`-delimited commands under `Data/Events` — are **not**
-highlighted yet.
+### Event scripts
+
+The `/`-delimited command lists under `Data/Events` are highlighted too, and
+nest: a `speak` line is JSON, then event script, then dialogue.
+
+```jsonc
+{
+  "Target": "Data/Events/Town",
+  "Entries": {
+    "42/f Abigail 750/t 600 1200": "continue/64 15/skippable/speak Abigail \"Morning, @!$h\"/end"
+  }
+}
+```
+
+Command names come from the first word of each segment rather than from a fixed
+list — 59 distinct commands turn up in one content pack, and the set changes
+between game releases, so a new one needs no update here.
 
 ## Validation
 
