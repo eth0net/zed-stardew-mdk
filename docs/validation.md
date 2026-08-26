@@ -22,6 +22,34 @@ the schema matches the literal string and cannot expand `{{PathTexture}}` to see
 the `.png`. Spelling the path out — `assets/paths_{{Season}}.png` — keeps the
 tokens and loses the warning.
 
+## Include files
+
+Content Patcher's `Include` patches load a file that may contain only `Changes`,
+and SMAPI publishes no schema for it — so pointing one at
+`content-patcher.json` fails, since that requires `Format`.
+
+A schema for it is twelve lines, because the format is a subset of the main one:
+
+```json
+{
+  "type": "object",
+  "required": ["Changes"],
+  "additionalProperties": false,
+  "properties": { "Changes": { "$ref": "content-patcher.json#/properties/Changes" } }
+}
+```
+
+The `$ref` resolves against the file's own location rather than its `$id`, so it
+works from the staged copies offline as well as served from smapi.io.
+
+An included file can declare `"$schema"` safely, despite the format allowing only
+`Changes`: `IncludePatch.GetInvalidFields` reflects over `ContentConfig`'s
+properties, and `ContentConfig` has no `$schema` member, so Newtonsoft drops the
+key before the check ever sees it. That means a file can select its own schema
+with no editor configuration — which is why
+[SMAPI#1035](https://github.com/Pathoschild/SMAPI/pull/1035) proposes hosting it
+at a stable URL.
+
 ## When `content.json` isn't Content Patcher
 
 Several frameworks use that filename. The extension reads the mod's
