@@ -1,0 +1,15 @@
+id = "stardew-mdk"
+name = "Stardew Valley MDK"
+version = "0.1.0"
+schema_version = 1
+authors = ["eth0net <eth0net@pm.me>"]
+description = "Syntax highlighting and schema validation for Stardew Valley mods: SMAPI manifests, Content Patcher content packs and translation files"
+repository = "https://github.com/eth0net/zed-stardew-mdk"
+
+languages = ["languages/content-patcher", "languages/stardew-json"]
+
+# Registered as `stardew_json` because Zed links the parser by its export
+# symbol, `tree_sitter_stardew_json`. Bump `commit` with scripts/bump-grammar-rev.py.
+[grammars.stardew_json]
+repository = "https://github.com/eth0net/tree-sitter-stardew-json"
+commit = "b5ce0492ff17cc73c5afdfbf86768ae0725c5ec9"

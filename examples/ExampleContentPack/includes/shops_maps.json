@@ -1,0 +1,16 @@
+{
+  // Pulled in by the `Include` patch in ../content.json. Include targets can be
+  // named anything, so they need a `file_types` glob — see ../../../.zed/settings.json.
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "Entries": {
+        "{{ModId}}_Stall": {
+          "Owners": [ { "Name": "AnyOrNone" } ],
+          "Items": [ { "Id": "{{ModId}}_Trinket", "ItemId": "(O)128" } ]
+        }
+      }
+    }
+  ]
+}

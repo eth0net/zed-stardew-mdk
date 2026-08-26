@@ -1,0 +1,90 @@
+{
+  "$schema": "https://smapi.io/schemas/content-patcher.json",
+  "Format": "2.8.0",
+
+  "ConfigSchema": {
+    "EnableSeasonalPaths": {
+      "AllowValues": "true, false",
+      "Default": "true"
+    },
+    "Palette": {
+      "AllowValues": "warm, cool",
+      "Default": "warm"
+    }
+  },
+
+  "DynamicTokens": [
+    {
+      "Name": "PathTexture",
+      "Value": "assets/paths_{{Palette}}_{{Season}}.png"
+    },
+    {
+      "Name": "Greeting",
+      "Value": "{{Random: hey, hello, hi |key={{Day}}}}"
+    }
+  ],
+
+  "Changes": [
+    // Seasonal path overlay.
+    {
+      "LogName": "Seasonal paths",
+      "Action": "Load",
+      "Target": "Maps/paths",
+      "FromFile": "{{PathTexture}}",
+      "When": {
+        "EnableSeasonalPaths": "true",
+        "HasFile:{{PathTexture}}": "true"
+      }
+    },
+
+    /* Nudge a single tile, only in the back half of winter. */
+    {
+      "Action": "EditImage",
+      "Target": "Maps/paths",
+      "FromFile": "assets/winter_patch.png",
+      "FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+      "ToArea": { "X": 96, "Y": 32, "Width": 16, "Height": 16 },
+      "PatchMode": "Overlay",
+      "When": {
+        "Season": "winter",
+        "Query: {{DayOfMonth}} >= 15": true
+      }
+    },
+
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Abigail",
+      "Entries": {
+        "{{Season}}_Mon": "{{Greeting}}, @! $h",
+        "Introduction": "Hi, I'm Abigail.#$b#Nice weather for {{Season}}."
+      },
+      "Fields": {
+        "spring_Tue": { "0": "Rewritten." }
+      },
+      "MoveEntries": [
+        { "ID": "Introduction", "ToPosition": "Top" }
+      ]
+    },
+
+    {
+      "Action": "Include",
+      "FromFile": "includes/shops_{{TargetWithoutPath|lowercase=true}}.json",
+      "When": { "HasMod |contains=spacechase0.SpaceCore": "true" }
+    },
+
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Town",
+      "MapProperties": { "Warp": "{{Warps}} 10 10 Farm 64 15" },
+      "AddWarps": [ "10 10 Farm 64 15" ],
+      "TextOperations": [
+        {
+          "Operation": "Append",
+          "Target": [ "Fields", "Warp" ],
+          "Value": "12 12 Beach 20 20",
+          "Delimiter": " "
+        }
+      ]
+    }
+  ]
+}

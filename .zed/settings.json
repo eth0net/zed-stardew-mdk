@@ -1,0 +1,6 @@
+{
+  "file_types": {
+    "Stardew JSON": ["**/i18n/*.json"],
+    "Content Patcher": ["**/includes/*.json"]
+  }
+}

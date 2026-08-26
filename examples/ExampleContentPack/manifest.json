@@ -1,0 +1,13 @@
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "Example Content Pack",
+  "Author": "you",
+  "Version": "1.0.0",
+  "Description": "Sample content pack used to exercise the Zed Stardew MDK extension.",
+  "UniqueID": "you.ExampleContentPack",
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher",
+    "MinimumVersion": "2.0.0"
+  },
+  "UpdateKeys": [ "Nexus:1234" ]
+}
