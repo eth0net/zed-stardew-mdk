@@ -1,6 +1,7 @@
 {
   "file_types": {
     "Stardew JSON": ["**/i18n/*.json"],
-    "Content Patcher": ["**/includes/*.json"]
+    "Content Patcher": ["**/includes/*.json"],
+    "Stardew Dialogue Data": ["**/Dialogue/*/Dialogue.json"]
   }
 }

@@ -13,6 +13,7 @@ tokens as syntax and validates your files against the schemas SMAPI publishes.
 | `content.json` | Content Patcher | [`content-patcher.json`](https://smapi.io/schemas/content-patcher.json) |
 | `manifest.json` | Stardew JSON | [`manifest.json`](https://smapi.io/schemas/manifest.json) |
 | `i18n/*.json` | Stardew JSON | [`i18n.json`](https://smapi.io/schemas/i18n.json) |
+| the game's dialogue files | Stardew Dialogue Data | — |
 
 > [!NOTE]
 > **New, and not yet in the extensions store.** Install it as a dev extension
@@ -42,7 +43,8 @@ than paths. In the project's `.zed/settings.json`:
 {
   "file_types": {
     "Stardew JSON": ["**/i18n/*.json"],
-    "Content Patcher": ["**/includes/*.json"]
+    "Content Patcher": ["**/includes/*.json"],
+    "Stardew Dialogue Data": ["**/Dialogue/*/Dialogue.json"]
   }
 }
 ```
@@ -74,6 +76,32 @@ pattern-matched, so nesting and filters come out as syntax:
 That covers tokens in values and in keys, mod-provided names
 (`{{Some.Mod/Token}}`), input arguments, `|filter=value` arguments and
 arbitrary nesting.
+
+### Dialogue
+
+Dialogue is a language of its own inside those strings, and it gets highlighted
+as one — `$` portrait and control codes, `%` substitutions, `@` for the player's
+name, `^` splitting male from female text, and `#` page breaks:
+
+```jsonc
+{
+  "Target": "Characters/Dialogue/Abigail",
+  "Entries": {
+    "Introduction": "Hi, I'm Abigail.$h#$b#Nice weather for {{Season}}, @."
+  }
+}
+```
+
+It fires only where the data really is dialogue. In a content pack that means a
+patch whose `Target` names a dialogue asset — the `Target` sits beside `Entries`
+rather than above it, so the query matches both, and file paths and event
+scripts are left alone. The game's own dialogue files carry no such marker, so
+they get their own language, reached through a glob.
+
+Content Patcher tokens inside a dialogue string keep their own highlighting.
+
+Event scripts — the `/`-delimited commands under `Data/Events` — are **not**
+highlighted yet.
 
 ## Validation
 
