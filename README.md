@@ -89,7 +89,9 @@ you mid-session. `scripts/update-schemas.sh` refreshes them.
 What it does **not** check is anything a JSON schema cannot see: whether
 `{{Seasn}}` is a real token, whether `|valeuAt=` is a real filter, whether a
 `FromFile` path exists, or whether an `EditData` key matches the game's data
-model. Content Patcher's `patch summary` console command remains the tool for
+model. The same blindness cuts the other way: a `FromFile` that is *entirely* a
+token is reported as missing its file extension, because the schema matches the
+literal string and cannot expand `{{PathTexture}}` to see the `.png`. Content Patcher's `patch summary` console command remains the tool for
 that. Closing that gap needs a language server that understands Content
 Patcher, which is [tracked separately](https://github.com/eth0net/zed-stardew-mdk/issues).
 

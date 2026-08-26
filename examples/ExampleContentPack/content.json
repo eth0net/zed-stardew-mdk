@@ -1,6 +1,6 @@
 {
   "$schema": "https://smapi.io/schemas/content-patcher.json",
-  "Format": "2.8.0",
+  "Format": "2.9.0",
 
   "ConfigSchema": {
     "EnableSeasonalPaths": {
@@ -30,7 +30,9 @@
       "LogName": "Seasonal paths",
       "Action": "Load",
       "Target": "Maps/paths",
-      "FromFile": "{{PathTexture}}",
+      // Spelled out rather than "{{PathTexture}}": the schema checks that
+      // FromFile ends in a known extension and cannot see through a token.
+      "FromFile": "assets/paths_{{Palette}}_{{Season}}.png",
       "When": {
         "EnableSeasonalPaths": "true",
         "HasFile:{{PathTexture}}": "true"
