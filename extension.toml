@@ -11,6 +11,7 @@ languages = [
   "languages/stardew-json",
   "languages/stardew-dialogue",
   "languages/stardew-dialogue-data",
+  "languages/stardew-event",
 ]
 
 # Registered as `stardew_json` because Zed links the parser by its export
@@ -22,6 +23,10 @@ commit = "b5ce0492ff17cc73c5afdfbf86768ae0725c5ec9"
 [grammars.stardew_dialogue]
 repository = "https://github.com/eth0net/tree-sitter-stardew-dialogue"
 commit = "27149d902aa01bc8ed28419131268f14149272cd"
+
+[grammars.stardew_event]
+repository = "https://github.com/eth0net/tree-sitter-stardew-event"
+commit = "2f5c71d2067314ce7f32c4a5dd5a0e3adc94857c"
 
 [language_servers.stardew-json-language-server]
 name = "Stardew JSON"

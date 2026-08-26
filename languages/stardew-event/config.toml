@@ -1,0 +1,5 @@
+# Injected into the strings of a Content Patcher pack, never opened directly, so
+# it stays out of the language picker.
+name = "Stardew Event"
+grammar = "stardew_event"
+hidden = true
